@@ -69,3 +69,13 @@ Route::get('/data/dinas', 'DinasController@dinas')->name('dinas');
 Route::get('/dinas/create', 'DinasController@create')->name('dinas.create');
 Route::post('/dinas/add', 'DinasController@add')->name('dinas.add');
 Route::get('/dinas/delete/{id}', 'DinasController@delete')->name('dinas.delete');
+
+
+//indikator
+
+Route::get('/matriks', 'MatriksAhpController@index')->name('matriks');
+Route::get('/matriks/create', 'MatriksAhpController@create')->name('matriks.create');
+Route::post('/matriks/add', 'MatriksAhpController@add')->name('matriks.add');
+Route::get('/matriks/delete/{id}', 'MatriksAhpController@delete')->name('matriks.delete');
+Route::get('/matriks/edit/{id}', 'MatriksAhpController@edit')->name('matriks.edit');
+Route::get('/matriks/update/{id}', 'MatriksAhpController@update')->name('matriks.update');

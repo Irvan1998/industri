@@ -17,7 +17,7 @@ class CreateMatriksAhpTable extends Migration
             $table->id();
             $table->integer('id_indikator');
             $table->integer('id_indikator2');
-            $table->string('kategori');
+            $table->string('kategori')->nullable();
             $table->timestamps();
         });
     }
