@@ -1,0 +1,5 @@
+@include('layouts.dinas.head')
+@include('layouts.dinas.side')
+@include('layouts.dinas.navbar')
+@yield('content')
+@include('layouts.dinas.footer')
