@@ -17,7 +17,7 @@ class MatriksAhpController extends Controller
 
     public function create()
     {
-        $indikator = Indikator::where('tahap', 2)->get();
+        $indikator = Indikator::where('tahap', 2)->orderBy('id', 'asc')->get();
         return view('matriks.create', compact('indikator'));
     }
 

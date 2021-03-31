@@ -32,7 +32,7 @@
                 Interface
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="{{route('tahap1')}}">
+                <a class="nav-link" href="{{ route('dinas.ahp') }}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>AHP </span></a>
             </li>

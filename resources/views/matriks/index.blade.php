@@ -36,8 +36,8 @@
                             @foreach($data as $data)
                             <tr>
                                 <td>{{$no++}}</td>
-                                <td>{{$data->id_indikator}}</td>
-                                <td>{{$data->id_indikator2}}</td>
+                                <td>{{$data->indikator->nama}}</td>
+                                <td>{{$data->indikator2->nama}}</td>
                                 <td>{{$data->kategori}}</td>
                                 <td>
                                     <a class="btn btn-warning" href="{{route('matriks.edit',$data->id)}}">Edit</a>

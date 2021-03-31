@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Ahp;
 use App\Indikator;
 use App\Industri;
 use App\Penguji;
@@ -37,7 +38,14 @@ class PengujiController extends Controller
 
     public function home()
     {
-        return view('penguji.home');
+        $ahp = Ahp::where('id_matriks', 6)->get();
+        $ahp_n = Ahp::where('id_matriks', 6)->get()->count();
+        $kali = 1;
+        foreach ($ahp as $ahp) {
+            $kali *= $ahp->nilai;
+        }
+        $geomean =  pow($kali, (float)(1 / $ahp_n));
+        echo $geomean;
     }
     public function tahap1()
     {

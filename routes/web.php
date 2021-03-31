@@ -65,6 +65,8 @@ Route::post('/home/penguji/add/2/{id}', 'PengujiController@tahap2_add')->name('t
 Route::get('/login/dinas', 'Auth\LoginController@logind')->name('login.dinas');
 Route::post('/login/proses/dinas', 'Auth\LoginController@logindpost')->name('login.post.dinas');
 Route::get('/home/dinas', 'DinasController@index')->name('home.dinas');
+Route::get('/home/dinas/ahp', 'DinasController@ahp')->name('dinas.ahp');
+Route::post('/home/dinas/add_ahp', 'DinasController@add_ahp')->name('dinas.ahp.add');
 Route::get('/data/dinas', 'DinasController@dinas')->name('dinas');
 Route::get('/dinas/create', 'DinasController@create')->name('dinas.create');
 Route::post('/dinas/add', 'DinasController@add')->name('dinas.add');

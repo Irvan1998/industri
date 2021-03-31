@@ -47,9 +47,15 @@
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Dinas</span></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('matriks')}}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Matriks</span></a>
+            </li>
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Indikator</span>
                 </a>

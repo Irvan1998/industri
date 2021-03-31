@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Ahp;
 use App\Dinas;
+use App\Indikator;
+use App\Matriks_ahp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -11,6 +14,12 @@ class DinasController extends Controller
     public function index()
     {
         return view('dinas.home');
+    }
+    public function ahp()
+    {
+        $no = 1;
+        $data = Matriks_ahp::get();
+        return view('dinas.ahp', compact('data', 'no'));
     }
 
     public function dinas()
@@ -41,5 +50,15 @@ class DinasController extends Controller
         $patch = Dinas::findOrFail($id);
         $patch->delete();
         return redirect(Route('dinas'));
+    }
+    public function add_ahp(Request $r)
+    {
+        Ahp::create([
+            'id_user' => $r->id_user,
+            'id_matriks' => $r->id_matriks,
+            'kategori' => $r->kategori,
+            'nilai' => $r->nilai,
+        ]);
+        return redirect(route('dinas.ahp'));
     }
 }
