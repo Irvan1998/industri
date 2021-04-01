@@ -8,6 +8,7 @@ use App\Indikator;
 use App\Matriks_ahp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class DinasController extends Controller
 {
@@ -18,8 +19,10 @@ class DinasController extends Controller
     public function ahp()
     {
         $no = 1;
+        $user = Dinas::where('id', Session('id'))->first();
         $data = Matriks_ahp::get();
-        return view('dinas.ahp', compact('data', 'no'));
+        // dd($user->id);
+        return view('dinas.ahp', compact('data', 'no', 'user'));
     }
 
     public function dinas()
