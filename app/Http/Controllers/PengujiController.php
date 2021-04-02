@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Ahp;
 use App\Indikator;
 use App\Industri;
+use App\Matriks_ahp;
 use App\Penguji;
 use App\Skala;
 use Illuminate\Http\Request;
@@ -38,14 +39,50 @@ class PengujiController extends Controller
 
     public function home()
     {
-        $ahp = Ahp::where('id_matriks', 6)->get();
-        $ahp_n = Ahp::where('id_matriks', 6)->get()->count();
-        $kali = 1;
-        foreach ($ahp as $ahp) {
-            $kali *= $ahp->nilai;
+        $ahps = Matriks_ahp::where('kategori', 'SDM')->get();
+        $indikator =  Indikator::where('tahap', 2)->where('kategori', 'SDM')->get()->sortBy('id');
+        $jml =  Indikator::where('tahap', 2)->where('kategori', 'SDM')->get()->sortBy('id')->count();
+        $geomean = null;
+        $total = null;
+        foreach ($ahps as $ahps) {
+            $ahp = Ahp::where('id_matriks', $ahps->id)->get();
+            $ahp_n = Ahp::where('id_matriks', $ahps->id)->get()->count();
+            $kali = 1;
+            foreach ($ahp as $ahp) {
+                $kali *= $ahp->nilai;
+            }
+            $geomean[$ahps->id_indikator][$ahps->id_indikator2] =  number_format(pow($kali, (float)(1 / $ahp_n)), 4);
+            $geomean[$ahps->id_indikator2][$ahps->id_indikator] =  number_format(1 / (pow($kali, (float)(1 / $ahp_n))), 4);
+            $geomean[$ahps->id_indikator][$ahps->id_indikator] =  1;
+            $geomean[$ahps->id_indikator2][$ahps->id_indikator2] =  1;
         }
-        $geomean =  pow($kali, (float)(1 / $ahp_n));
-        echo $geomean;
+        //total
+        foreach ($indikator as $ahp1) {
+            $g = 0;
+
+            foreach ($indikator as $ahp2) {
+                $g += $geomean[$ahp2->id][$ahp1->id];
+                $total[$ahp1->id] = $g;
+            }
+        }
+        foreach ($indikator as $ahp1) {
+            foreach ($indikator as $ahp2) {
+                $nilai_n = $geomean[$ahp2->id][$ahp1->id] / $total[$ahp1->id];
+                $nilai[$ahp2->id][$ahp1->id] = $nilai_n;
+            }
+        }
+
+        foreach ($indikator as $ahp1) {
+            $n = 0;
+            foreach ($indikator as $ahp2) {
+                $n += $nilai[$ahp1->id][$ahp2->id];
+            }
+            $bobot[$ahp1->id] = $n / $jml;
+        }
+        echo $bobot[40] . '<br>';
+        echo $bobot[41] . '<br>';
+        echo $bobot[42] . '<br>';
+        echo $bobot[43] . '<br>';
     }
     public function tahap1()
     {
