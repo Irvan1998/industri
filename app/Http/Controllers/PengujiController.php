@@ -39,11 +39,15 @@ class PengujiController extends Controller
 
     public function home()
     {
+        /*
+        Mencari Bobot Lokal & Global Kategori SDM
+         */
         $ahps = Matriks_ahp::where('kategori', 'SDM')->get();
         $indikator =  Indikator::where('tahap', 2)->where('kategori', 'SDM')->get()->sortBy('id');
         $jml =  Indikator::where('tahap', 2)->where('kategori', 'SDM')->get()->sortBy('id')->count();
         $geomean = null;
         $total = null;
+        // matriks penilaian
         foreach ($ahps as $ahps) {
             $ahp = Ahp::where('id_matriks', $ahps->id)->get();
             $ahp_n = Ahp::where('id_matriks', $ahps->id)->get()->count();
@@ -56,7 +60,7 @@ class PengujiController extends Controller
             $geomean[$ahps->id_indikator][$ahps->id_indikator] =  1;
             $geomean[$ahps->id_indikator2][$ahps->id_indikator2] =  1;
         }
-        //total
+        //total matriks penilaian
         foreach ($indikator as $ahp1) {
             $g = 0;
 
@@ -65,24 +69,29 @@ class PengujiController extends Controller
                 $total[$ahp1->id] = $g;
             }
         }
+
         foreach ($indikator as $ahp1) {
             foreach ($indikator as $ahp2) {
                 $nilai_n = $geomean[$ahp2->id][$ahp1->id] / $total[$ahp1->id];
                 $nilai[$ahp2->id][$ahp1->id] = $nilai_n;
             }
         }
-
+        //normalisasi
         foreach ($indikator as $ahp1) {
             $n = 0;
             foreach ($indikator as $ahp2) {
                 $n += $nilai[$ahp1->id][$ahp2->id];
             }
-            $bobot[$ahp1->id] = $n / $jml;
+            $bobot[$ahp1->id] = number_format($n / $jml, 4);
         }
-        echo $bobot[40] . '<br>';
-        echo $bobot[41] . '<br>';
-        echo $bobot[42] . '<br>';
-        echo $bobot[43] . '<br>';
+        //bobot global & lokal
+        foreach ($indikator as $a) {
+            echo 'bobot lokal ' . $a->id . '=' . $bobot[$a->id] . '<br>';
+            echo 'bobot global ' . $a->id . '=' . $bobot[$a->id] * 0.25 . '<br>';
+        }
+        /*
+        End Mencari Bobot Lokal & Global Kategori SDM
+         */
     }
     public function tahap1()
     {
