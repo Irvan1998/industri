@@ -48,17 +48,17 @@ class PengujiController extends Controller
         $geomean = null;
         $total = null;
         // matriks penilaian
-        foreach ($ahps as $ahps) {
-            $ahp = Ahp::where('id_matriks', $ahps->id)->get();
-            $ahp_n = Ahp::where('id_matriks', $ahps->id)->get()->count();
+        foreach ($ahps as $a) {
+            $ahp = Ahp::where('id_matriks', $a->id)->get();
+            $ahp_n = Ahp::where('id_matriks', $a->id)->get()->count();
             $kali = 1;
             foreach ($ahp as $ahp) {
                 $kali *= $ahp->nilai;
             }
-            $geomean[$ahps->id_indikator][$ahps->id_indikator2] =  number_format(pow($kali, (float)(1 / $ahp_n)), 4);
-            $geomean[$ahps->id_indikator2][$ahps->id_indikator] =  number_format(1 / (pow($kali, (float)(1 / $ahp_n))), 4);
-            $geomean[$ahps->id_indikator][$ahps->id_indikator] =  1;
-            $geomean[$ahps->id_indikator2][$ahps->id_indikator2] =  1;
+            $geomean[$a->id_indikator][$a->id_indikator2] =  number_format(pow($kali, (float)(1 / $ahp_n)), 4);
+            $geomean[$a->id_indikator2][$a->id_indikator] =  number_format(1 / (pow($kali, (float)(1 / $ahp_n))), 4);
+            $geomean[$a->id_indikator][$a->id_indikator] =  1;
+            $geomean[$a->id_indikator2][$a->id_indikator2] =  1;
         }
         //total matriks penilaian
         foreach ($indikator as $ahp1) {
@@ -85,12 +85,176 @@ class PengujiController extends Controller
             $bobot[$ahp1->id] = number_format($n / $jml, 4);
         }
         //bobot global & lokal
+        echo 'SDM <br>';
         foreach ($indikator as $a) {
             echo 'bobot lokal ' . $a->id . '=' . $bobot[$a->id] . '<br>';
             echo 'bobot global ' . $a->id . '=' . $bobot[$a->id] * 0.25 . '<br>';
         }
         /*
         End Mencari Bobot Lokal & Global Kategori SDM
+         */
+
+        /*
+        Mencari Bobot Lokal & Global Kategori PRODUKSI
+         */
+        $ahps_produksi = Matriks_ahp::where('kategori', 'PRODUKSI')->get();
+        $indikator_produksi =  Indikator::where('tahap', 2)->where('kategori', 'PRODUKSI')->get()->sortBy('id');
+        $jml_produksi =  Indikator::where('tahap', 2)->where('kategori', 'PRODUKSI')->get()->sortBy('id')->count();
+        $geomean = null;
+        $total = null;
+        // matriks penilaian
+        foreach ($ahps_produksi as $a) {
+            $ahp = Ahp::where('id_matriks', $a->id)->get();
+            $ahp_n = Ahp::where('id_matriks', $a->id)->get()->count();
+            $kali = 1;
+            foreach ($ahp as $ahp) {
+                $kali *= $ahp->nilai;
+            }
+            $geomean[$a->id_indikator][$a->id_indikator2] =  number_format(pow($kali, (float)(1 / $ahp_n)), 4);
+            $geomean[$a->id_indikator2][$a->id_indikator] =  number_format(1 / (pow($kali, (float)(1 / $ahp_n))), 4);
+            $geomean[$a->id_indikator][$a->id_indikator] =  1;
+            $geomean[$a->id_indikator2][$a->id_indikator2] =  1;
+        }
+        //total matriks penilaian
+        foreach ($indikator_produksi as $ahp1) {
+            $g = 0;
+
+            foreach ($indikator_produksi as $ahp2) {
+                $g += $geomean[$ahp2->id][$ahp1->id];
+                $total[$ahp1->id] = $g;
+            }
+        }
+
+        foreach ($indikator_produksi as $ahp1) {
+            foreach ($indikator_produksi as $ahp2) {
+                $nilai_n = $geomean[$ahp2->id][$ahp1->id] / $total[$ahp1->id];
+                $nilai[$ahp2->id][$ahp1->id] = $nilai_n;
+            }
+        }
+        //normalisasi
+        foreach ($indikator_produksi as $ahp1) {
+            $n = 0;
+            foreach ($indikator_produksi as $ahp2) {
+                $n += $nilai[$ahp1->id][$ahp2->id];
+            }
+            $bobot[$ahp1->id] = number_format($n / $jml_produksi, 4);
+        }
+        //bobot global & lokal
+        echo 'Produksi <br>';
+        foreach ($indikator_produksi as $a) {
+            echo 'bobot lokal ' . $a->id . '=' . $bobot[$a->id] . '<br>';
+            echo 'bobot global ' . $a->id . '=' . $bobot[$a->id] * 0.25 . '<br>';
+        }
+        /*
+        End Mencari Bobot Lokal & Global Kategori PRODUKSI
+         */
+        /*
+        Mencari Bobot Lokal & Global Kategori Transportasi
+         */
+        $ahps_transportasi = Matriks_ahp::where('kategori', 'PENYIMPANAN&TRANSPORTASI')->get();
+        $indikator_transportasi =  Indikator::where('tahap', 2)->where('kategori', 'PENYIMPANAN&TRANSPORTASI')->get()->sortBy('id');
+        $jml_transportasi =  Indikator::where('tahap', 2)->where('kategori', 'PENYIMPANAN&TRANSPORTASI')->get()->sortBy('id')->count();
+        $geomean = null;
+        $total = null;
+        // matriks penilaian
+        foreach ($ahps_transportasi as $a) {
+            $ahp = Ahp::where('id_matriks', $a->id)->get();
+            $ahp_n = Ahp::where('id_matriks', $a->id)->get()->count();
+            $kali = 1;
+            foreach ($ahp as $ahp) {
+                $kali *= $ahp->nilai;
+            }
+            $geomean[$a->id_indikator][$a->id_indikator2] =  number_format(pow($kali, (float)(1 / $ahp_n)), 4);
+            $geomean[$a->id_indikator2][$a->id_indikator] =  number_format(1 / (pow($kali, (float)(1 / $ahp_n))), 4);
+            $geomean[$a->id_indikator][$a->id_indikator] =  1;
+            $geomean[$a->id_indikator2][$a->id_indikator2] =  1;
+        }
+        //total matriks penilaian
+        foreach ($indikator_transportasi as $ahp1) {
+            $g = 0;
+
+            foreach ($indikator_transportasi as $ahp2) {
+                $g += $geomean[$ahp2->id][$ahp1->id];
+                $total[$ahp1->id] = $g;
+            }
+        }
+
+        foreach ($indikator_transportasi as $ahp1) {
+            foreach ($indikator_transportasi as $ahp2) {
+                $nilai_n = $geomean[$ahp2->id][$ahp1->id] / $total[$ahp1->id];
+                $nilai[$ahp2->id][$ahp1->id] = $nilai_n;
+            }
+        }
+        //normalisasi
+        foreach ($indikator_transportasi as $ahp1) {
+            $n = 0;
+            foreach ($indikator_transportasi as $ahp2) {
+                $n += $nilai[$ahp1->id][$ahp2->id];
+            }
+            $bobot[$ahp1->id] = number_format($n / $jml_transportasi, 4);
+        }
+        //bobot global & lokal
+        echo 'Transportasi <br>';
+        foreach ($indikator_transportasi as $a) {
+            echo 'bobot lokal ' . $a->id . '=' . $bobot[$a->id] . '<br>';
+            echo 'bobot global ' . $a->id . '=' . $bobot[$a->id] * 0.25 . '<br>';
+        }
+        /*
+        End Mencari Bobot Lokal & Global Kategori Transportasi
+         */
+        /*
+        Mencari Bobot Lokal & Global Kategori Halal
+         */
+        $ahps_halal = Matriks_ahp::where('kategori', 'INTEGRITASHALAL')->get();
+        $indikator_halal =  Indikator::where('tahap', 2)->where('kategori', 'INTEGRITASHALAL')->get()->sortBy('id');
+        $jml_halal =  Indikator::where('tahap', 2)->where('kategori', 'INTEGRITASHALAL')->get()->sortBy('id')->count();
+        $geomean = null;
+        $total = null;
+        // matriks penilaian
+        foreach ($ahps_halal as $a) {
+            $ahp = Ahp::where('id_matriks', $a->id)->get();
+            $ahp_n = Ahp::where('id_matriks', $a->id)->get()->count();
+            $kali = 1;
+            foreach ($ahp as $ahp) {
+                $kali *= $ahp->nilai;
+            }
+            $geomean[$a->id_indikator][$a->id_indikator2] =  number_format(pow($kali, (float)(1 / $ahp_n)), 4);
+            $geomean[$a->id_indikator2][$a->id_indikator] =  number_format(1 / (pow($kali, (float)(1 / $ahp_n))), 4);
+            $geomean[$a->id_indikator][$a->id_indikator] =  1;
+            $geomean[$a->id_indikator2][$a->id_indikator2] =  1;
+        }
+        //total matriks penilaian
+        foreach ($indikator_halal as $ahp1) {
+            $g = 0;
+
+            foreach ($indikator_halal as $ahp2) {
+                $g += $geomean[$ahp2->id][$ahp1->id];
+                $total[$ahp1->id] = $g;
+            }
+        }
+
+        foreach ($indikator_halal as $ahp1) {
+            foreach ($indikator_halal as $ahp2) {
+                $nilai_n = $geomean[$ahp2->id][$ahp1->id] / $total[$ahp1->id];
+                $nilai[$ahp2->id][$ahp1->id] = $nilai_n;
+            }
+        }
+        //normalisasi
+        foreach ($indikator_halal as $ahp1) {
+            $n = 0;
+            foreach ($indikator_halal as $ahp2) {
+                $n += $nilai[$ahp1->id][$ahp2->id];
+            }
+            $bobot[$ahp1->id] = number_format($n / $jml_halal, 4);
+        }
+        //bobot global & lokal
+        echo 'Halal <br>';
+        foreach ($indikator_halal as $a) {
+            echo 'bobot lokal ' . $a->id . '=' . $bobot[$a->id] . '<br>';
+            echo 'bobot global ' . $a->id . '=' . $bobot[$a->id] * 0.25 . '<br>';
+        }
+        /*
+        End Mencari Bobot Lokal & Global Kategori Halal
          */
     }
     public function tahap1()
