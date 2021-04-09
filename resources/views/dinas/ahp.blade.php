@@ -48,6 +48,7 @@
                                         <div class="modal-dialog modal-md">
                                             <div class="modal-content">
                                                 <div class="modal-header">
+                                                    <h4>Masukan Nilai</h4>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
@@ -55,8 +56,49 @@
                                                 <div class="modal-body p-4">
                                                     <form method="POST" action="{{ route('dinas.ahp.add') }}">
                                                         @csrf
+                                                        <h4 class="text-center"><b> Tabel Nilai </b></h4>
 
+                                                        <table class="table table-bordered">
+                                                            <thead>
+                                                                <th>Nilai</th>
+                                                                <th>Definisi</th>
+                                                                <th>Keterangan</th>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>1</td>
+                                                                    <td>Sama penting</td>
+                                                                    <td>Kedua elemen mempunyai pengaruh yang sama</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>3</td>
+                                                                    <td>Sedikit lebih penting</td>
+                                                                    <td>Kedua elemen mempunyai pengaruh yang sama</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>5</td>
+                                                                    <td>Lebih penting</td>
+                                                                    <td>Kedua elemen mempunyai pengaruh yang sama</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>7</td>
+                                                                    <td>Sangat penting</td>
+                                                                    <td>Kedua elemen mempunyai pengaruh yang sama</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>9</td>
+                                                                    <td>Mutlak lebih penting</td>
+                                                                    <td>Kedua elemen mempunyai pengaruh yang sama</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>2,4,6,8</td>
+                                                                    <td>Nilai tengah</td>
+                                                                    <td>Kedua elemen mempunyai pengaruh yang sama</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
                                                         <div class="mb-4">
+                                                            <p><b> Apakah indikator 1 lebih penting daripada indikator 2 atau sebaliknya ? </b></p>
                                                             <label for="message-text" class="col-form-label">Nilai
                                                                 (1-9)</label>
                                                             <input class="form-control" name="nilai" type="number">

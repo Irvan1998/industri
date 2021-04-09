@@ -72,6 +72,8 @@ Route::get('/dinas/create', 'DinasController@create')->name('dinas.create');
 Route::post('/dinas/add', 'DinasController@add')->name('dinas.add');
 Route::get('/dinas/delete/{id}', 'DinasController@delete')->name('dinas.delete');
 
+// laporan ahp
+Route::get('/dinas/laporan/ahp', 'DinasController@lap_ahp')->name('lap.ahp');
 
 //indikator
 
