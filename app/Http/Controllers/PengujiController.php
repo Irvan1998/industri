@@ -84,12 +84,8 @@ class PengujiController extends Controller
             }
             $bobot[$ahp1->id] = number_format($n / $jml, 4);
         }
-        //bobot global & lokal
-        echo 'SDM <br>';
-        foreach ($indikator as $a) {
-            echo 'bobot lokal ' . $a->id . '=' . $bobot[$a->id] . '<br>';
-            echo 'bobot global ' . $a->id . '=' . $bobot[$a->id] * 0.25 . '<br>';
-        }
+
+
         /*
         End Mencari Bobot Lokal & Global Kategori SDM
          */
@@ -139,12 +135,7 @@ class PengujiController extends Controller
             }
             $bobot[$ahp1->id] = number_format($n / $jml_produksi, 4);
         }
-        //bobot global & lokal
-        echo 'Produksi <br>';
-        foreach ($indikator_produksi as $a) {
-            echo 'bobot lokal ' . $a->id . '=' . $bobot[$a->id] . '<br>';
-            echo 'bobot global ' . $a->id . '=' . $bobot[$a->id] * 0.25 . '<br>';
-        }
+
         /*
         End Mencari Bobot Lokal & Global Kategori PRODUKSI
          */
@@ -193,12 +184,7 @@ class PengujiController extends Controller
             }
             $bobot[$ahp1->id] = number_format($n / $jml_transportasi, 4);
         }
-        //bobot global & lokal
-        echo 'Transportasi <br>';
-        foreach ($indikator_transportasi as $a) {
-            echo 'bobot lokal ' . $a->id . '=' . $bobot[$a->id] . '<br>';
-            echo 'bobot global ' . $a->id . '=' . $bobot[$a->id] * 0.25 . '<br>';
-        }
+
         /*
         End Mencari Bobot Lokal & Global Kategori Transportasi
          */
@@ -247,15 +233,11 @@ class PengujiController extends Controller
             }
             $bobot[$ahp1->id] = number_format($n / $jml_halal, 4);
         }
-        //bobot global & lokal
-        echo 'Halal <br>';
-        foreach ($indikator_halal as $a) {
-            echo 'bobot lokal ' . $a->id . '=' . $bobot[$a->id] . '<br>';
-            echo 'bobot global ' . $a->id . '=' . $bobot[$a->id] * 0.25 . '<br>';
-        }
+
         /*
         End Mencari Bobot Lokal & Global Kategori Halal
          */
+        return view('penguji.home', compact('bobot'));
     }
     public function tahap1()
     {
