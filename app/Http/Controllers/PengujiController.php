@@ -47,6 +47,7 @@ class PengujiController extends Controller
         $jml =  Indikator::where('tahap', 2)->where('kategori', 'SDM')->get()->sortBy('id')->count();
         $geomean = null;
         $total = null;
+        $e_max = 0;
         // matriks penilaian
         foreach ($ahps as $a) {
             $ahp = Ahp::where('id_matriks', $a->id)->get();
@@ -55,8 +56,8 @@ class PengujiController extends Controller
             foreach ($ahp as $ahp) {
                 $kali *= $ahp->nilai;
             }
-            $geomean[$a->id_indikator][$a->id_indikator2] =  number_format(pow($kali, (float)(1 / $ahp_n)), 4);
-            $geomean[$a->id_indikator2][$a->id_indikator] =  number_format(1 / (pow($kali, (float)(1 / $ahp_n))), 4);
+            $geomean[$a->id_indikator][$a->id_indikator2] =  pow($kali, (float)(1 / $ahp_n));
+            $geomean[$a->id_indikator2][$a->id_indikator] =  1 / (pow($kali, (float)(1 / $ahp_n)));
             $geomean[$a->id_indikator][$a->id_indikator] =  1;
             $geomean[$a->id_indikator2][$a->id_indikator2] =  1;
         }
@@ -82,10 +83,31 @@ class PengujiController extends Controller
             foreach ($indikator as $ahp2) {
                 $n += $nilai[$ahp1->id][$ahp2->id];
             }
-            $bobot[$ahp1->id] = number_format($n / $jml, 4);
+            $bobot[$ahp1->id] = $n / $jml;
         }
+        //eigen
+        foreach ($indikator as $ahp1) {
+            foreach ($indikator as $ahp2) {
+                $nilai_e = $geomean[$ahp2->id][$ahp1->id] * $bobot[$ahp1->id];
+                $nilaie[$ahp2->id][$ahp1->id] = $nilai_e;
+            }
+        }
+        foreach ($indikator as $ahp1) {
+            $n_e = 0;
+            foreach ($indikator as $ahp2) {
+                $n_e += $nilaie[$ahp1->id][$ahp2->id];
+            }
+            $total_eigen[$ahp1->id] = $n_e;
+        }
+        foreach ($indikator as $ahp1) {
 
-
+            $nilai_eigen[$ahp1->id] = $total_eigen[$ahp1->id] / $bobot[$ahp1->id];
+            $e_max += $nilai_eigen[$ahp1->id];
+            $eigen_max['SDM'] = $e_max / $jml;
+        }
+        $ci['SDM'] = ($eigen_max['SDM'] - $jml) / ($jml - 1);
+        $r1['SDM'] = 0.9;
+        $cr['SDM'] = $ci['SDM'] / $r1['SDM'];
         /*
         End Mencari Bobot Lokal & Global Kategori SDM
          */
@@ -98,6 +120,7 @@ class PengujiController extends Controller
         $jml_produksi =  Indikator::where('tahap', 2)->where('kategori', 'PRODUKSI')->get()->sortBy('id')->count();
         $geomean = null;
         $total = null;
+        $e_max = 0;
         // matriks penilaian
         foreach ($ahps_produksi as $a) {
             $ahp = Ahp::where('id_matriks', $a->id)->get();
@@ -135,7 +158,29 @@ class PengujiController extends Controller
             }
             $bobot[$ahp1->id] = number_format($n / $jml_produksi, 4);
         }
+        //eigen
+        foreach ($indikator_produksi as $ahp1) {
+            foreach ($indikator_produksi as $ahp2) {
+                $nilai_e = $geomean[$ahp2->id][$ahp1->id] * $bobot[$ahp1->id];
+                $nilaie[$ahp2->id][$ahp1->id] = $nilai_e;
+            }
+        }
+        foreach ($indikator_produksi as $ahp1) {
+            $n_e = 0;
+            foreach ($indikator_produksi as $ahp2) {
+                $n_e += $nilaie[$ahp1->id][$ahp2->id];
+            }
+            $total_eigen[$ahp1->id] = $n_e;
+        }
+        foreach ($indikator_produksi as $ahp1) {
 
+            $nilai_eigen[$ahp1->id] = $total_eigen[$ahp1->id] / $bobot[$ahp1->id];
+            $e_max += $nilai_eigen[$ahp1->id];
+            $eigen_max['PRODUKSI'] = $e_max / $jml_produksi;
+        }
+        $ci['PRODUKSI'] = ($eigen_max['PRODUKSI'] - $jml_produksi) / ($jml_produksi - 1);
+        $r1['PRODUKSI'] = 0.58;
+        $cr['PRODUKSI'] = $ci['PRODUKSI'] / $r1['PRODUKSI'];
         /*
         End Mencari Bobot Lokal & Global Kategori PRODUKSI
          */
@@ -147,6 +192,7 @@ class PengujiController extends Controller
         $jml_transportasi =  Indikator::where('tahap', 2)->where('kategori', 'PENYIMPANAN&TRANSPORTASI')->get()->sortBy('id')->count();
         $geomean = null;
         $total = null;
+        $e_max = 0;
         // matriks penilaian
         foreach ($ahps_transportasi as $a) {
             $ahp = Ahp::where('id_matriks', $a->id)->get();
@@ -184,7 +230,29 @@ class PengujiController extends Controller
             }
             $bobot[$ahp1->id] = number_format($n / $jml_transportasi, 4);
         }
+        //eigen
+        foreach ($indikator_transportasi as $ahp1) {
+            foreach ($indikator_transportasi as $ahp2) {
+                $nilai_e = $geomean[$ahp2->id][$ahp1->id] * $bobot[$ahp1->id];
+                $nilaie[$ahp2->id][$ahp1->id] = $nilai_e;
+            }
+        }
+        foreach ($indikator_transportasi as $ahp1) {
+            $n_e = 0;
+            foreach ($indikator_transportasi as $ahp2) {
+                $n_e += $nilaie[$ahp1->id][$ahp2->id];
+            }
+            $total_eigen[$ahp1->id] = $n_e;
+        }
+        foreach ($indikator_transportasi as $ahp1) {
 
+            $nilai_eigen[$ahp1->id] = $total_eigen[$ahp1->id] / $bobot[$ahp1->id];
+            $e_max += $nilai_eigen[$ahp1->id];
+            $eigen_max['PENYIMPANAN&TRANSPORTASI'] = $e_max / $jml_transportasi;
+        }
+        $ci['PENYIMPANAN&TRANSPORTASI'] = ($eigen_max['PENYIMPANAN&TRANSPORTASI'] - $jml_transportasi) / ($jml_transportasi - 1);
+        $r1['PENYIMPANAN&TRANSPORTASI'] = 0;
+        $cr['PENYIMPANAN&TRANSPORTASI'] = 0;
         /*
         End Mencari Bobot Lokal & Global Kategori Transportasi
          */
@@ -196,6 +264,7 @@ class PengujiController extends Controller
         $jml_halal =  Indikator::where('tahap', 2)->where('kategori', 'INTEGRITASHALAL')->get()->sortBy('id')->count();
         $geomean = null;
         $total = null;
+        $e_max = 0;
         // matriks penilaian
         foreach ($ahps_halal as $a) {
             $ahp = Ahp::where('id_matriks', $a->id)->get();
@@ -233,6 +302,29 @@ class PengujiController extends Controller
             }
             $bobot[$ahp1->id] = number_format($n / $jml_halal, 4);
         }
+        //eigen
+        foreach ($indikator_halal as $ahp1) {
+            foreach ($indikator_halal as $ahp2) {
+                $nilai_e = $geomean[$ahp2->id][$ahp1->id] * $bobot[$ahp1->id];
+                $nilaie[$ahp2->id][$ahp1->id] = $nilai_e;
+            }
+        }
+        foreach ($indikator_halal as $ahp1) {
+            $n_e = 0;
+            foreach ($indikator_halal as $ahp2) {
+                $n_e += $nilaie[$ahp1->id][$ahp2->id];
+            }
+            $total_eigen[$ahp1->id] = $n_e;
+        }
+        foreach ($indikator_halal as $ahp1) {
+
+            $nilai_eigen[$ahp1->id] = $total_eigen[$ahp1->id] / $bobot[$ahp1->id];
+            $e_max += $nilai_eigen[$ahp1->id];
+            $eigen_max['INTEGRITASHALAL'] = $e_max / $jml_halal;
+        }
+        $ci['INTEGRITASHALAL'] = ($eigen_max['INTEGRITASHALAL'] - $jml_halal) / ($jml_halal - 1);
+        $r1['INTEGRITASHALAL'] = 1.12;
+        $cr['INTEGRITASHALAL'] = $ci['INTEGRITASHALAL'] / $r1['INTEGRITASHALAL'];
 
         /*
         End Mencari Bobot Lokal & Global Kategori Halal

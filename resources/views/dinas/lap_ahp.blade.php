@@ -36,8 +36,8 @@
                                 <td>{{$in->kategori}}</td>
                                 <td>0.25</td>
                                 <td>{{$in->nama}}</td>
-                                <td>{{$bobot[$in->id]}}</td>
-                                <td>{{$bobot[$in->id]*0.25}}</td>
+                                <td>{{number_format($bobot[$in->id],4)}}</td>
+                                <td>{{number_format($bobot[$in->id]*0.25,4)}}</td>
 
 
                             </tr>
@@ -55,19 +55,24 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>contoh</td>
-                                    <td>contoh</td>
-                                    <td>contoh</td>
+                                    <td>SDM</td>
+                                    <td>{{ number_format($ci['SDM'],4) }}</td>
+                                    <td>{{ number_format($cr['SDM'],4) }}</td>
                                 </tr>
                                 <tr>
-                                    <td>contoh</td>
-                                    <td>contoh</td>
-                                    <td>contoh</td>
+                                    <td>PRODUKSI</td>
+                                    <td>{{number_format($ci['PRODUKSI'],4) }}</td>
+                                    <td>{{ number_format($cr['PRODUKSI'],4) }}</td>
                                 </tr>
                                 <tr>
-                                    <td>contoh</td>
-                                    <td>contoh</td>
-                                    <td>contoh</td>
+                                    <td>PENYIMPANAN&TRANSPORTASI</td>
+                                    <td>{{ number_format($ci['PENYIMPANAN&TRANSPORTASI'],4) }}</td>
+                                    <td>{{ number_format($cr['PENYIMPANAN&TRANSPORTASI'],4) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>INTEGRITASHALAL</td>
+                                    <td>{{ number_format($ci['INTEGRITASHALAL'],4) }}</td>
+                                    <td>{{ number_format($cr['INTEGRITASHALAL'],4) }}</td>
                                 </tr>
                             </tbody>
                         </table>
