@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddKategoriToIndikator extends Migration
+class CreateKategoriTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class AddKategoriToIndikator extends Migration
      */
     public function up()
     {
-        Schema::table('indikator', function (Blueprint $table) {
-            $table->string('kategori')->nullable();
+        Schema::create('kategori', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +27,6 @@ class AddKategoriToIndikator extends Migration
      */
     public function down()
     {
-        Schema::table('indikator', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('kategori');
     }
 }
