@@ -356,6 +356,11 @@ class DinasController extends Controller
         $r1['INTEGRITASHALAL'] = 1.12;
         $cr['INTEGRITASHALAL'] = $ci['INTEGRITASHALAL'] / $r1['INTEGRITASHALAL'];
 
-        return view('dinas.lap_ahp', compact('indikatorall', 'no', 'bobot', 'ci', 'cr'));
+        $total_global = 0;
+        foreach ($indikatorall as $value) {
+            $total_global += $bobot[$value->id] * 0.25;
+        }
+
+        return view('dinas.lap_ahp', compact('indikatorall', 'no', 'bobot', 'ci', 'cr', 'total_global'));
     }
 }

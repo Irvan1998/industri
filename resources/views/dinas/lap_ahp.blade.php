@@ -30,6 +30,7 @@
                             </tr>
                         </thead>
                         <tbody>
+
                             @foreach($indikatorall as $in)
                             <tr>
                                 <td>{{$no++}}</td>
@@ -38,8 +39,6 @@
                                 <td>{{$in->nama}}</td>
                                 <td>{{number_format($bobot[$in->id],4)}}</td>
                                 <td>{{number_format($bobot[$in->id]*0.25,4)}}</td>
-
-
                             </tr>
                             @endforeach
                         </tbody>
@@ -73,6 +72,18 @@
                                     <td>INTEGRITASHALAL</td>
                                     <td>{{ number_format($ci['INTEGRITASHALAL'],4) }}</td>
                                     <td>{{ number_format($cr['INTEGRITASHALAL'],4) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-bordered">
+                            <thead class="bg-secondary">
+                                <th class="text-dark" width="40%">Total Bobot Indikator Global</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ number_format($total_global,4) }}</td>
                                 </tr>
                             </tbody>
                         </table>
