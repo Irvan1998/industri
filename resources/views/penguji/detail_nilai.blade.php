@@ -30,6 +30,9 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                            $total = 0;
+                            @endphp
                             @foreach($indikatorall as $in)
                             <tr>
                                 <td>{{$no++}}</td>
@@ -38,9 +41,8 @@
                                 <td>{{$in->nama}}</td>
                                 <td>
                                     <?php
-
                                     $k = DB::table('nilai_skala')->where('id_indikator', $in->id)->where('id_industri', $id)->first();
-
+$total += $bobot[$in->id]*0.25*$k->nilai;
                                     ?>
                                     <p> {{$k->nilai}}</p>
 
@@ -80,6 +82,18 @@
                                     <td>INTEGRITASHALAL</td>
                                     <td>{{ number_format($ci['INTEGRITASHALAL'],4) }}</td>
                                     <td>{{ number_format($cr['INTEGRITASHALAL'],4) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-bordered">
+                            <thead class="bg-secondary">
+                                <th class="text-dark" width="40%">Total</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ $total }}</td>
                                 </tr>
                             </tbody>
                         </table>
