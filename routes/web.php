@@ -56,6 +56,7 @@ Route::patch('/home/penguji/tahap1/{id}', 'PengujiController@tahap1_store')->nam
 Route::get('/home/penguji/tahap2', 'PengujiController@tahap2')->name('tahap2');
 Route::get('/home/penguji/tahap2/{id}', 'PengujiController@tahap2_create')->name('tahap2.create');
 Route::post('/home/penguji/add/2/{id}', 'PengujiController@tahap2_add')->name('tahap2.add');
+Route::patch('/home/penguji/update/2/{id}', 'PengujiController@tahap2_update')->name('tahap2.update');
 
 
 
@@ -74,6 +75,9 @@ Route::get('/dinas/delete/{id}', 'DinasController@delete')->name('dinas.delete')
 
 // laporan ahp
 Route::get('/dinas/laporan/ahp', 'DinasController@lap_ahp')->name('lap.ahp');
+Route::get('/laporan/ahp', 'PengujiController@lap_ahp')->name('penguji.lap.ahp');
+Route::get('/laporan/akhir', 'PengujiController@lap_akhir')->name('penguji.lap.akhir');
+Route::get('/laporan/akhir/detail/{id}', 'PengujiController@lap_detail')->name('penguji.lap.detail');
 
 //indikator
 

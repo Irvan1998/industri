@@ -8,5 +8,5 @@ class Nilai extends Model
 {
     protected $table = 'nilai_skala';
     public $timestamps = true;
-    protected $fillable = array('id_industri', 'id_indikator', 'id_skala', 'nilai');
+    protected $fillable = array('id_industri', 'id_indikator', 'id_user', 'nilai');
 }

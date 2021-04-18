@@ -23,6 +23,7 @@
                             <th>Nama Industri</th>
                             <th>Nilai Tahap 1</th>
                             <th>Nilai Tahap 2</th>
+                            <th>Penguji</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -47,15 +48,19 @@
 
 
                                 $k = DB::table('nilai_skala')->where('id_industri', $item->id)->sum('nilai');
+                                $ke = DB::table('nilai_skala')->where('id_industri', $item->id)->first();
+                                $ku = DB::table('penguji')->where('id', $ke->id_user)->first();
                                 ?>
                                 <p> {{$k}}</p>
 
                             </td>
                             <td>
+                                {{$ku->name}}
+                            </td>
+                            <td>
                                 <div class="button-group">
 
-                                    <a href="{{route('tahap2.create',$item->id)}}"><button class="btn-success btn">Berikan
-                                            Nilai</button></a>
+                                    <a href="{{route('penguji.lap.detail',$item->id)}}"><button class="btn-primary btn">Detail Nilai</button></a>
 
                                 </div>
                             </td>

@@ -41,6 +41,16 @@
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Penilaian Tahap 2 </span></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('penguji.lap.ahp')}}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Laporan AHP </span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('penguji.lap.akhir')}}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Laporan Nilai </span></a>
+            </li>
 
 
             <!-- Divider -->
